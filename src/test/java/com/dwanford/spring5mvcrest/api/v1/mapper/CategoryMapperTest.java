@@ -4,7 +4,7 @@ import com.dwanford.spring5mvcrest.api.v1.model.CategoryDTO;
 import com.dwanford.spring5mvcrest.domain.Category;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CategoryMapperTest {
 
@@ -20,7 +20,7 @@ class CategoryMapperTest {
         category.setId(ID);
 
         //when
-        CategoryDTO categoryDTO = categoryMapper.categoryToCategoryDTO(category);
+        CategoryDTO categoryDTO = categoryMapper.toDTO(category);
 
         //then
         assertEquals(ID, categoryDTO.getId());
