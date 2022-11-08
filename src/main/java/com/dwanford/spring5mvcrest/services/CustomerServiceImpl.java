@@ -27,6 +27,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public CustomerDTO getCustomerById(Long id) {
+        return customerMapper.toDTO(customerRepository.findById(id).orElseThrow(RuntimeException::new)); //todo handle
+    }
+
+    @Override
     public CustomerDTO getCustomerByLastName(String lastName) {
         return customerMapper.toDTO(customerRepository.findByLastName(lastName));
     }

@@ -17,7 +17,7 @@ import java.util.List;
 import static com.dwanford.spring5mvcrest.controllers.v1.AbstractRestControllerTest.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,6 +28,7 @@ class CustomerControllerTest {
 
     private static final String FIRST_NAME = "John";
     private static final String LAST_NAME = "Doe";
+    private static final String CUSTOMER_URL = "/api/v1/customers/1";
 
     @Mock
     CustomerService customerService;
@@ -65,14 +66,15 @@ class CustomerControllerTest {
     }
 
     @Test
-    void getCustomerByLastName() throws Exception {
+    void getCustomerById() throws Exception {
         CustomerDTO customer = new CustomerDTO();
         customer.setFirstName(FIRST_NAME);
         customer.setLastName(LAST_NAME);
+        customer.setCustomerUrl(CUSTOMER_URL);
 
-        when(customerService.getCustomerByLastName(anyString())).thenReturn(customer);
+        when(customerService.getCustomerById(anyLong())).thenReturn(customer);
 
-        mockMvc.perform(get("/api/v1/customers/" + LAST_NAME)
+        mockMvc.perform(get(CUSTOMER_URL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.lastName", equalTo(LAST_NAME)));
