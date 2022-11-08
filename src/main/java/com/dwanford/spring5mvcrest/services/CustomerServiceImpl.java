@@ -2,6 +2,7 @@ package com.dwanford.spring5mvcrest.services;
 
 import com.dwanford.spring5mvcrest.api.v1.mapper.CustomerMapper;
 import com.dwanford.spring5mvcrest.api.v1.model.CustomerDTO;
+import com.dwanford.spring5mvcrest.domain.Customer;
 import com.dwanford.spring5mvcrest.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO getCustomerByLastName(String lastName) {
         return customerMapper.toDTO(customerRepository.findByLastName(lastName));
+    }
+
+    @Override
+    public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
+        Customer customer = customerMapper.toEntity(customerDTO);
+        return customerMapper.toDTO(customerRepository.save(customer));
     }
 }
