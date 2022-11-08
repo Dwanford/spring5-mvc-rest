@@ -12,11 +12,10 @@ import java.util.stream.Collectors;
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
-    private final CustomerMapper customerMapper;
+    private final CustomerMapper customerMapper = CustomerMapper.INSTANCE;
 
     public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-        this.customerMapper = CustomerMapper.INSTANCE;
     }
 
     @Override
@@ -38,7 +37,19 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
+        return saveAndReturnDTO(customerMapper.toEntity(customerDTO));
+    }
+
+    @Override
+    public CustomerDTO saveCustomerByDTO(Long id, CustomerDTO customerDTO) {
         Customer customer = customerMapper.toEntity(customerDTO);
-        return customerMapper.toDTO(customerRepository.save(customer));
+        customer.setId(id);
+
+        return saveAndReturnDTO(customer);
+    }
+
+    public CustomerDTO saveAndReturnDTO(Customer customer) {
+        Customer saved = customerRepository.save(customer);
+        return customerMapper.toDTO(saved);
     }
 }
