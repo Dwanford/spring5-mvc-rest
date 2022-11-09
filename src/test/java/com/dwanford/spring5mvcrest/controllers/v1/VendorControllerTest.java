@@ -97,4 +97,5 @@ class VendorControllerTest {
                 .andExpect(jsonPath("$.name", equalTo(NAME)))
                 .andExpect(jsonPath("$.vendor_url", equalTo(VENDOR_URL)));
     }
+
 }
