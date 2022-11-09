@@ -56,7 +56,9 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public void deleteVendor(Long id) {
-        vendorRepository.deleteById(id);
+        if(vendorRepository.findById(id).isPresent())
+            vendorRepository.deleteById(id);
+        else throw new ResourceNotFoundException();
     }
 
     public VendorDTO saveAndReturnDTO(Vendor vendor) {
