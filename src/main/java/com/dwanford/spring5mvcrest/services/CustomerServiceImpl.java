@@ -4,6 +4,7 @@ import com.dwanford.spring5mvcrest.api.v1.mapper.CustomerMapper;
 import com.dwanford.spring5mvcrest.api.v1.model.CustomerDTO;
 import com.dwanford.spring5mvcrest.domain.Customer;
 import com.dwanford.spring5mvcrest.repositories.CustomerRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,8 +68,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomerById(Long id) {
-        if(customerRepository.findById(id).isPresent())
+        try {
             customerRepository.deleteById(id);
-        else throw new ResourceNotFoundException();
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(e);
+        }
     }
 }

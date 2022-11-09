@@ -4,6 +4,7 @@ import com.dwanford.spring5mvcrest.api.v1.mapper.VendorMapper;
 import com.dwanford.spring5mvcrest.api.v1.model.VendorDTO;
 import com.dwanford.spring5mvcrest.domain.Vendor;
 import com.dwanford.spring5mvcrest.repositories.VendorRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,9 +57,11 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public void deleteVendor(Long id) {
-        if(vendorRepository.findById(id).isPresent())
+        try {
             vendorRepository.deleteById(id);
-        else throw new ResourceNotFoundException();
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(e);
+        }
     }
 
     public VendorDTO saveAndReturnDTO(Vendor vendor) {
